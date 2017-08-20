@@ -113,7 +113,7 @@ describe('choicefieldDirective <uif-choicefield />', () => {
     $scope.selectedValue = '';
 
     let choicefield: JQuery = $compile('<uif-choicefield-option uif-type="checkbox" value="Option1"' +
-      'ng-model="selectedValue" ng-true-value="\'TRUEVALUE\'" ng-false-value="\'FALSEVALUE\'">Option 1</uif-choicefield>')($scope);
+      'ng-model="selectedValue" ng-true-value="\'TRUEVALUE\'" ng-false-value="\'FALSEVALUE\'">Option 1</uif-choicefield-option>')($scope);
     $scope.$digest();
     choicefield = jQuery(choicefield[0]);
 
@@ -140,8 +140,8 @@ describe('choicefieldDirective <uif-choicefield />', () => {
     option1.click();
     option2.click();
 
-    expect(option1.prop('checked')).toBe(true, 'Input should be checked after click');
-    expect(option2.prop('checked')).toBe(true, 'Input should be checked after click');
+    expect(option1.prop('checked')).toBe(true, 'Input 1 should be checked after click');
+    expect(option2.prop('checked')).toBe(true, 'Input 2 should be checked after click');
     expect($scope.selectedValue).toBe(['TRUEVALUE', 'TRUEVALUE'], 'ng model should be an array with two "TRUEVALUE" items');
   }));
 

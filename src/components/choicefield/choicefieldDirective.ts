@@ -126,12 +126,14 @@ export class ChoicefieldOptionDirective implements angular.IDirective {
           'Supported options are listed here: ' +
           'https://github.com/ngOfficeUIFabric/ng-officeuifabric/blob/master/src/components/choicefield/choicefieldTypeEnum.ts');
       }
-      let modelValue: any = choicefieldGroupController.getViewValue();
-      if (newValue === 'radio' && modelValue && modelValue.constructor === Array) {
-        choicefieldGroupController.setViewValue(modelValue[0], null);
-      }
-      if (newValue === 'checkbox' && modelValue && modelValue.constructor === String) {
-        choicefieldGroupController.setViewValue([modelValue], null);
+      if (choicefieldGroupController != null) {
+        let modelValue: any = choicefieldGroupController.getViewValue();
+        if (newValue === 'radio' && modelValue && modelValue.constructor === Array) {
+          choicefieldGroupController.setViewValue(modelValue[0], null);
+        }
+        if (newValue === 'checkbox' && modelValue && modelValue.constructor === String) {
+          choicefieldGroupController.setViewValue([modelValue], null);
+        }
       }
     });
     if (choicefieldGroupController != null) {
