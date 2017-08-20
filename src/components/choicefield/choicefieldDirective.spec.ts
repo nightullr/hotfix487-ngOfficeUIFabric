@@ -124,6 +124,27 @@ describe('choicefieldDirective <uif-choicefield />', () => {
     expect($scope.selectedValue).toBe('TRUEVALUE', 'ng model should be "TRUEVALUE"');
   }));
 
+  it('should be able to select multiple options', inject(($compile: Function, $rootScope: angular.IRootScopeService) => {
+    let $scope: any = $rootScope.$new();
+    $scope.selectedValue = [];
+
+    let choicefield: JQuery = $compile('<uif-choicefield-group ng-model="selectedValue"><uif-choicefield-option uif-type="checkbox" value="Option1"' +
+      'ng-true-value="\'TRUEVALUE\'" ng-false-value="\'FALSEVALUE\'">Option 1</uif-choicefield><uif-choicefield-option uif-type="checkbox" value="Option2"' +
+      'ng-true-value="\'TRUEVALUE\'" ng-false-value="\'FALSEVALUE\'">Option 2</uif-choicefield></uif-choicefield-group>')($scope);
+    $scope.$digest();
+    choicefield = jQuery(choicefield[0]);
+    choicefield.appendTo(document.body);
+    let option1: JQuery = jQuery(choicefield.find('input')[0]);
+    let option2: JQuery = jQuery(choicefield.find('input')[1]);
+    
+    option1.click();
+    option2.click();
+
+    expect(option1.prop('checked')).toBe(true, 'Input should be checked after click');
+    expect(option2.prop('checked')).toBe(true, 'Input should be checked after click');
+    expect($scope.selectedValue).toBe(['TRUEVALUE', 'TRUEVALUE'], 'ng model should be an array with two "TRUEVALUE" items');
+  }));
+
   it('should be validating attributes', inject(($compile: Function, $rootScope: angular.IRootScopeService, $log: angular.ILogService) => {
     let $scope: any = $rootScope.$new();
     $scope.selectedValue = 'Option1';
