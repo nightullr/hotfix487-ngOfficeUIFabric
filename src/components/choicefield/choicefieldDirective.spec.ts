@@ -79,7 +79,7 @@ describe('choicefieldDirective <uif-choicefield />', () => {
     expect(option1.prop('checked')).toBe(true, 'Option 1 - Checked should be true before click');
     option3.click();
     expect(option3.prop('checked')).toBe(true, 'Option 3 - Checked should be true after click');
-    expect(option3.prop('checked')).toBe(true, 'Option 1 - Checked should be false after click');
+    expect(option1.prop('checked')).toBe(false, 'Option 1 - Checked should be false after click');
     expect($scope.selectedValue).toBe('Option3', 'Scope value should be option3 now as it is a radio button group');
   }));
 
