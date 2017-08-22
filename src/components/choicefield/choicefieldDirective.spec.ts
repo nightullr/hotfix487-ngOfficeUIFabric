@@ -49,8 +49,7 @@ describe('choicefieldDirective <uif-choicefield />', () => {
     $scope.$digest();
     choicefield = jQuery(choicefield[0]);
 
-    let input2: JQuery = choicefield.find('div.ms-ChoiceFieldGroup div.ms-ChoiceField:nth-child(2) input');
-    input2 = jQuery(choicefield.find('input')[1]);
+    let input2 = jQuery(choicefield.find('input')[1]);
     expect(input2.prop('checked')).toBe(true, 'Input 2 (value2) should be checked');
 
     let input3: JQuery = jQuery(choicefield.find('input')[2]);
@@ -113,7 +112,7 @@ describe('choicefieldDirective <uif-choicefield />', () => {
     $scope.selectedValue = '';
 
     let choicefield: JQuery = $compile('<uif-choicefield-option uif-type="checkbox" value="Option1"' +
-      'ng-model="selectedValue" ng-true-value="\'TRUEVALUE\'" ng-false-value="\'FALSEVALUE\'">Option 1</uif-choicefield-option>')($scope);
+      'ng-model="selectedValue" ng-true-value="\'TRUEVALUE\'" ng-false-value="\'FALSEVALUE\'">Option 1uif-choicefield-option>')($scope);
     $scope.$digest();
     choicefield = jQuery(choicefield[0]);
 
@@ -124,13 +123,12 @@ describe('choicefieldDirective <uif-choicefield />', () => {
     expect($scope.selectedValue).toBe('TRUEVALUE', 'ng model should be "TRUEVALUE"');
   }));
 
-  it('should be able to select multiple options', inject(($compile: Function, $rootScope: angular.IRootScopeService) => {
+  it('should be able to select multiple options in a group', inject(($compile: Function, $rootScope: angular.IRootScopeService) => {
     let $scope: any = $rootScope.$new();
-    $scope.selectedValue = [];
+    $scope.selectedValue;
 
     let choicefield: JQuery = $compile('<uif-choicefield-group ng-model="selectedValue"><uif-choicefield-option uif-type="checkbox" value="Option1"' +
-      'ng-true-value="\'TRUEVALUE\'" ng-false-value="\'FALSEVALUE\'">Option 1</uif-choicefield><uif-choicefield-option uif-type="checkbox" value="Option2"' +
-      'ng-true-value="\'TRUEVALUE\'" ng-false-value="\'FALSEVALUE\'">Option 2</uif-choicefield></uif-choicefield-group>')($scope);
+      '>Option 1</uif-choicefield-option><uif-choicefield-option uif-type="checkbox" value="Option2">Option 2</uif-choicefield-option></uif-choicefield-group>')($scope);
     $scope.$digest();
     choicefield = jQuery(choicefield[0]);
     choicefield.appendTo(document.body);
@@ -138,11 +136,13 @@ describe('choicefieldDirective <uif-choicefield />', () => {
     let option2: JQuery = jQuery(choicefield.find('input')[1]);
     
     option1.click();
-    option2.click();
-
     expect(option1.prop('checked')).toBe(true, 'Input 1 should be checked after click');
+    
+    option2.click();
     expect(option2.prop('checked')).toBe(true, 'Input 2 should be checked after click');
-    expect($scope.selectedValue).toBe(['TRUEVALUE', 'TRUEVALUE'], 'ng model should be an array with two "TRUEVALUE" items');
+    expect(option1.prop('checked')).toBe(true, 'Input 1 should still be checked after input 2 click');
+    
+    expect($scope.selectedValue).toEqual(['Option1', 'Option2'], 'ng model should be an array with two items');
   }));
 
   it('should be validating attributes', inject(($compile: Function, $rootScope: angular.IRootScopeService, $log: angular.ILogService) => {
@@ -151,7 +151,7 @@ describe('choicefieldDirective <uif-choicefield />', () => {
 
     expect($log.error.logs.length).toBe(0);
     $compile('<uif-choicefield-option uif-type="invalid" value="Option1"' +
-      'ng-model="selectedValue">Option 1</uif-choicefield>')($scope);
+      'ng-model="selectedValue">Option 1</uif-choicefield-option>')($scope);
     $scope.$digest();
 
     expect($log.error.logs[0]).toContain('Error [ngOfficeUiFabric] officeuifabric.components.choicefield - ' +
@@ -172,8 +172,8 @@ describe('choicefieldDirective <uif-choicefield />', () => {
     $scope.disabled = true;
     $scope.disabledChild = false;
 
-    let choicefield: JQuery = $compile('<uif-choicefield-group ng-model="selectedValue" ng-disabled="disabled" uif-type="radio">' +
-      '<uif-choicefield-option ng-repeat="option in options" ng-disabled="disabledChild" ' +
+    let choicefield: JQuery = $compile('<uif-choicefield-group ng-model="selectedValue" ng-disabled="disabled">' +
+      '<uif-choicefield-option uif-type="radio" ng-repeat="option in options" ng-disabled="disabledChild" ' +
       'value="{{option.value}}">{{option.text}}</uif-choicefield-option></uif-choicefield-group>')($scope);
     $scope.$digest();
     choicefield = jQuery(choicefield[0]);
@@ -181,6 +181,9 @@ describe('choicefieldDirective <uif-choicefield />', () => {
 
     let option1: JQuery = jQuery(choicefield.find('input')[0]);
     let option3: JQuery = jQuery(choicefield.find('input')[2]);
+
+    expect(!!option1.attr('disabled')).toBe(true, 'Option 1 should be disabled');
+    expect(!!option3.attr('disabled')).toBe(true, 'Option 3 should be disabled');
 
     option3.click();
     expect(option3.prop('checked')).toBe(false, 'Option 3 - Checked should be false after click as parent element is disabled');

@@ -68,7 +68,7 @@ export class ChoicefieldOptionController {
  * @usage
  *
  * <uif-choicefield-option uif-type="checkbox" value="Option1"
- *      ng-model="selectedValue" ng-true-value="\'TRUEVALUE\'" ng-false-value="\'FALSEVALUE\'">Option 1</uif-choicefield>
+ *      ng-model="selectedValue" ng-true-value="\'TRUEVALUE\'" ng-false-value="\'FALSEVALUE\'">Option 1</uif-choicefield-option>
  */
 export class ChoicefieldOptionDirective implements angular.IDirective {
   public template: string = '<div class="ms-ChoiceField">' +
