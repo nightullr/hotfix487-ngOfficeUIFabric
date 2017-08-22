@@ -65,7 +65,8 @@ module.exports = (config: Config) => {
     webpack: wpConfig,
     webpackMiddleware: {
       noInfo: true
-    }
+    },
+    browserNoActivityTimeout: 100000
   };
 
   // set karma configuration
